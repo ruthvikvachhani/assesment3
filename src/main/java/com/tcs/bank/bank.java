@@ -56,18 +56,15 @@ public class bank {
 		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 				Statement statement = connection.createStatement();) {
 			
+			balance = retrive(statement,username);
 			
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM USER_ACCOUNT WHERE USER_NAME LIKE '" + username + "';");
-			
-			resultSet.next();
-			balance = resultSet.getFloat("BALANCE_AMOUNT");
 
 			new_balance = balance + depositAmmount;
-			statement.executeUpdate("UPDATE USER_ACCOUNT SET BALANCE_AMOUNT = "+new_balance+" WHERE USER_NAME LIKE '" + username + "';");
+			update(statement,new_balance,username);
+			
 				
-			resultSet = statement.executeQuery("SELECT * FROM USER_ACCOUNT WHERE USER_NAME LIKE '" + username + "';");				
-			resultSet.next();
-			System.out.println(resultSet.getFloat("BALANCE_AMOUNT"));
+			balance = retrive(statement,username);
+			System.out.println(balance);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -77,6 +74,19 @@ public class bank {
 	}
 		
 
+
+	private static void update(Statement statement, float new_balance, String username) throws SQLException {
+		// TODO Auto-generated method stub
+		statement.executeUpdate("UPDATE USER_ACCOUNT SET BALANCE_AMOUNT = "+new_balance+" WHERE USER_NAME LIKE '" + username + "';");
+	}
+
+	private static float retrive(Statement statement ,String username) throws SQLException {
+		// TODO Auto-generated method stub
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM USER_ACCOUNT WHERE USER_NAME LIKE '" + username + "';");
+		
+		resultSet.next();
+		return resultSet.getFloat("BALANCE_AMOUNT");
+	}
 
 	public static void withdraw() {
 		String userName;
@@ -91,36 +101,28 @@ public class bank {
 		System.out.println("entwer ammount");
 		withdrawalAmmount = scanner.nextFloat();
 		
-		retriveBalance(userName,withdrawalAmmount);
+		updateBalance(userName,withdrawalAmmount);
 	}
 
-	public static void retriveBalance(String username, float withdrawalAmmount) {
+	public static void updateBalance(String username, float withdrawalAmmount) {
 		String DB_URL = "jdbc:mysql://localhost/bank";
 		String DB_USER = "root";
 		String DB_PASSWORD = "Nuvelabs123$";
 		float balance = 0;
 		float new_balance = 0;
-		int id = 0;
 
 		
 		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 				Statement statement = connection.createStatement();) {
-			System.out.println("SELECT * FROM USER_ACCOUNT WHERE USER_NAME == '" + username + "'");
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM USER_ACCOUNT WHERE USER_NAME LIKE '" + username + "';");
-			
-			
-			resultSet.next();
-			id = resultSet.getInt("USER_ID");
-			balance = resultSet.getFloat("BALANCE_AMOUNT");
+			balance = retrive(statement, username);
 			
 			if(balance >= withdrawalAmmount)
 			{
 				new_balance = balance - withdrawalAmmount;
-				statement.executeUpdate("UPDATE USER_ACCOUNT SET BALANCE_AMOUNT = "+new_balance+" WHERE USER_NAME LIKE '" + username + "';");
-				resultSet = statement.executeQuery("SELECT * FROM USER_ACCOUNT WHERE USER_NAME LIKE '" + username + "';");
 				
-				resultSet.next();
-				System.out.println(resultSet.getFloat("BALANCE_AMOUNT"));
+				update(statement,new_balance,username);
+				balance = retrive(statement,username);
+				System.out.println(balance);
 			}
 			else
 			{
