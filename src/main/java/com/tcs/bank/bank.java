@@ -9,6 +9,9 @@ import java.util.Scanner;
 
 public class bank {
 
+	private static String DB_URL = "jdbc:mysql://localhost/bank";
+	private static String DB_USER = "root";
+	private static String DB_PASSWORD = "Nuvelabs123$";
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 
@@ -23,8 +26,10 @@ public class bank {
 			withdraw();
 			break;
 		case 2:
-				deposit();
+			deposit();
 			break;
+		default:
+			System.out.println("select appropriate option");
 		}
 
 	}
@@ -44,10 +49,8 @@ public class bank {
 		depositBalance(userName,depositAmmount);
 	}
 
-	public static void depositBalance(String username, float depositAmmount) {
-		String DB_URL = "jdbc:mysql://localhost/bank";
-		String DB_USER = "root";
-		String DB_PASSWORD = "Nuvelabs123$";
+	private static void depositBalance(String username, float depositAmmount) {
+		
 		float balance = 0;
 		float new_balance = 0;
 		int id = 0;
@@ -105,9 +108,7 @@ public class bank {
 	}
 
 	public static void updateBalance(String username, float withdrawalAmmount) {
-		String DB_URL = "jdbc:mysql://localhost/bank";
-		String DB_USER = "root";
-		String DB_PASSWORD = "Nuvelabs123$";
+		
 		float balance = 0;
 		float new_balance = 0;
 
@@ -132,8 +133,6 @@ public class bank {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-
 }	
