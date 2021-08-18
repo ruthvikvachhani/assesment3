@@ -101,7 +101,7 @@ public class bank {
 		System.out.println("enter the username(use Ruthvik,luffy,zoro case sensitive for testing): ");
 		userName = scanner.nextLine();
 		
-		System.out.println("entwer ammount");
+		System.out.println("enter ammount");
 		withdrawalAmmount = scanner.nextFloat();
 		
 		updateBalance(userName,withdrawalAmmount);
