@@ -40,7 +40,7 @@ public class bank {
 		float depositAmmount;
 		Scanner scanner = new Scanner(System.in);
 
-		System.out.println("enter the username: ");
+		System.out.println("enter the username(use Ruthvik,luffy,zoro case sensitive for testing): ");
 		userName = scanner.nextLine();
 		
 		System.out.println("enter ammount");
